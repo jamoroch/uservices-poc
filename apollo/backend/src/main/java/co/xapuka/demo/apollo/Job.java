@@ -4,15 +4,14 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.UUID;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "job", indexes = {@Index(name="idx_job_lastmodified_date", columnList = "lastModifiedDate"), @Index(name=
-        "idx_job_status", columnList = "status"), @Index(name = "idx_job_number_of_retries", columnList =
-        "numberOfRetries")})
+        "idx_job_status", columnList = "status"), @Index(name = "idx_job_retryCount", columnList =
+        "retryCount")})
 public class Job {
 
     @Id
@@ -34,7 +33,7 @@ public class Job {
     private String payload;
 
     @Column(nullable = false)
-    private Integer numberOfRetries;
+    private int retryCount;
 
 
     public UUID getJobId() {
@@ -77,11 +76,22 @@ public class Job {
         this.payload = payload;
     }
 
-    public Integer getNumberOfRetries() {
-        return numberOfRetries;
+    public int getRetryCount() {
+        return retryCount;
     }
 
-    public void setNumberOfRetries(Integer numberOfRetries) {
-        this.numberOfRetries = numberOfRetries;
+    public void setNumberOfRetries(int retryCount) {
+        this.retryCount = retryCount;
+    }
+
+
+    @PrePersist
+    public void prePersist(){
+            retryCount = 0;
+    }
+
+    @PreUpdate
+    public void preUpdate(){
+        retryCount++;
     }
 }

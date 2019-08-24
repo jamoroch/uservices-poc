@@ -46,11 +46,6 @@
 			<version>2.5.0</version>
 		</dependency>
 		<dependency>
-			<groupId>io.github.divinespear</groupId>
-			<artifactId>jpa-schema-maven-plugin</artifactId>
-			<version>0.2.1</version>
-		</dependency>
-		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
@@ -67,20 +62,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>io.github.divinespear</groupId>
-				<artifactId>jpa-schema-maven-plugin</artifactId>
-				<version>0.1.12</version>
-				<configuration>
-
-				</configuration>
-				<executions>
-					<!-- if you want auto-generate schema on lifecycle. default lifecycle is "process-classes". -->
-				</executions>
-				<dependencies>
-					<!-- JDBC driver here (if you don't defined in dependencies) -->
-				</dependencies>
 			</plugin>
 		</plugins>
 	</build>
