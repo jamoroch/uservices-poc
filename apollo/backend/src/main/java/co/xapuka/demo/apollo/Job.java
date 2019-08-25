@@ -22,18 +22,18 @@ public class Job {
     private Date lastModifiedDate;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private JobStatus status;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private JobType type;
 
     @Column(nullable = false)
     private String payload;
 
     @Column(nullable = false)
-    private int retryCount;
+    private Integer retryCount;
 
 
     public UUID getJobId() {
@@ -76,22 +76,26 @@ public class Job {
         this.payload = payload;
     }
 
-    public int getRetryCount() {
+    public Integer getRetryCount() {
         return retryCount;
     }
 
-    public void setNumberOfRetries(int retryCount) {
+    public void setNumberOfRetries(Integer retryCount) {
         this.retryCount = retryCount;
     }
 
 
     @PrePersist
-    public void prePersist(){
-            retryCount = 0;
+    public void prePersist() {
+        if(retryCount == null) {
+            retryCount = Integer.valueOf("0");
+        }
     }
 
     @PreUpdate
-    public void preUpdate(){
-        retryCount++;
+    public void preUpdate() {
+        if(JobStatus.WAITING.equals(status)) {
+            retryCount++;
+        }
     }
 }

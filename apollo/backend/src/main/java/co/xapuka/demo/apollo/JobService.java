@@ -5,18 +5,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class JobService {
 
     private static final Integer MAX_JOB_RETRY = 5;
+
     @Autowired
     JobRepository jobRepository;
 
@@ -57,7 +53,8 @@ public class JobService {
     }
 
     public List<Job> getJobsToProcess(){
-        return jobRepository.findAll();
+        return jobRepository.findTop10ByStatusInOrderByLastModifiedDateAsc(Arrays.asList(JobStatus.CREATED,
+                JobStatus.WAITING));
     }
 
     public Job updateJob(Job job) {
