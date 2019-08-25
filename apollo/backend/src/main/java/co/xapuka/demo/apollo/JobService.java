@@ -69,4 +69,9 @@ public class JobService {
         }
         updateJob(job);
     }
+
+    public void removeFailedJobs() {
+        List<Job> jobs = jobRepository.findByStatus(JobStatus.FAILED);
+        jobRepository.deleteAll(jobs);
+    }
 }

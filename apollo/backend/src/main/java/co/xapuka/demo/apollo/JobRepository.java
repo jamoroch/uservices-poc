@@ -9,4 +9,6 @@ public interface JobRepository  extends JpaRepository<Job, UUID> {
 
 
     List<Job> findTop10ByStatusInOrderByLastModifiedDateAsc(List<JobStatus> statuses);
+    List<Job> findByStatus(JobStatus status);
+
 }
