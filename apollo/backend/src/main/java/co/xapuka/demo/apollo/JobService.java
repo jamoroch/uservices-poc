@@ -75,8 +75,14 @@ public class JobService {
 
     public void removeFailedJobs() {
         List<Job> jobs = jobRepository.findByStatus(JobStatus.FAILED);
+        LOG.info(" FAILED jobs to be deleted: {}", jobs.size());
         jobs.forEach(j -> LOG.info("FAILED job to be deleted {}", j.getJobId() ));
         jobRepository.deleteAll(jobs);
+    }
+    public void removeDoneJobs() {
+        List<Job> jobs = jobRepository.findByStatus(JobStatus.DONE);
+        LOG.info(" DONE jobs to be deleted: {}", jobs.size());
+        jobs.forEach(this::removeDoneJob);
     }
 
     public void removeDoneJob(Job job) {
@@ -89,9 +95,4 @@ public class JobService {
 
     }
 
-    public void removeDoneJobs() {
-
-        List<Job> jobs = jobRepository.findByStatus(JobStatus.DONE);
-        jobs.forEach(this::removeDoneJob);
-    }
 }
