@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
-set -e
-NUMBERS_OF_JOBS=${1:-100}
+set -e -u
 
-
+NUMBERS_OF_JOBS=$1
+PORT=$2
+BASE_URL=http://localhost:$PORT
 echo "Creating ${NUMBERS_OF_JOBS} Jobs"
 
  for i in $(seq ${NUMBERS_OF_JOBS})
@@ -10,7 +11,7 @@ echo "Creating ${NUMBERS_OF_JOBS} Jobs"
      echo "launching job ${i}"
      COMPANY_ID=$(uuidgen)
      set -x
-     curl -s http://localhost:2000/$COMPANY_ID  -X PUT -H "Content-Type:application/json" -d '{"companyName":"test"}' >> curl.out
-     curl -s http://localhost:2000/  -X POST -H "Content-Type:application/json" -d '{"companyName":"test"}' >> curl.out
+     curl -s $BASE_URL/$COMPANY_ID  -X PUT -H "Content-Type:application/json" -d '{"companyName":"test"}' >> curl.out
+     curl -s $BASE_URL/ -X POST  -H "Content-Type:application/json" -d '{"companyName":"test"}' >> curl.out
      set +x
    done

@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
+
+set -e -u -x
+
 cd "$( dirname "S{BASH_SOURCE[0]}" )"
-NUMBER_OF_PROCESSES=${1:-2}
+NUMBER_OF_PROCESSES=${1}
 BASE_PORT=${2:-2000}
 BACKEND_DIR=../apollo/backend/
 TARGET_DIRNAME=target
@@ -10,7 +13,7 @@ APOLLO_VERSION=1
 JAVA_OPTS="-Xmx1024m -XX:MaxMetaspaceSize=128m"
 
 cd $BACKEND_DIR
-mvn clean package
+mvn clean package 1> /dev/null
 cd -
 
 
