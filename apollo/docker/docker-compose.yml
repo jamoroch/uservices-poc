@@ -1,13 +1,41 @@
 version: '3.1'
 
 services:
+  apollo_backend:
+    depends_on:
+    - apollo_postgres
+    restart: "no"
+    build:
+      context: ../backend
+      dockerfile: docker/Dockerfile
+    network_mode: bridge
+    expose:
+      - 2000
+    ports:
+    - 2000:2000
 
   apollo_postgres:
     image: postgres:9.6
+    network_mode: bridge
     restart: always
     environment:
       POSTGRES_DB: apollo
       POSTGRES_USER: apollo
       POSTGRES_PASSWORD: apollo
+    expose:
+      - 5432
     ports:
       - 5432:5432
+  portainer:
+    image: portainer/portainer
+    command: -H unix:///var/run/docker.sock
+    restart: always
+    ports:
+      - 4000:4000
+      - 3000:3000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+
+volumes:
+  portainer_data:
