@@ -8,7 +8,7 @@ import java.util.UUID;
 public interface JobRepository  extends JpaRepository<Job, UUID> {
 
 
-    List<Job> findTop10ByStatusInOrderByLastModifiedDateAsc(List<JobStatus> statuses);
+    List<Job> findTop1000ByStatusInOrderByLastModifiedDateAsc(List<JobStatus> statuses);
     List<Job> findByStatus(JobStatus status);
 
 }

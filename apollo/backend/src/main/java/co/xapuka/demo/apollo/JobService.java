@@ -3,6 +3,8 @@ package co.xapuka.demo.apollo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hibernate.cfg.NotYetImplementedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,7 @@ import java.util.*;
 @Service
 public class JobService {
 
+    private static Logger LOG = LoggerFactory.getLogger(JobService.class);
     private static final Integer MAX_JOB_RETRY = 5;
 
     @Autowired
@@ -53,7 +56,7 @@ public class JobService {
     }
 
     public List<Job> getJobsToProcess(){
-        return jobRepository.findTop10ByStatusInOrderByLastModifiedDateAsc(Arrays.asList(JobStatus.CREATED,
+        return jobRepository.findTop1000ByStatusInOrderByLastModifiedDateAsc(Arrays.asList(JobStatus.CREATED,
                 JobStatus.WAITING));
     }
 
@@ -72,6 +75,23 @@ public class JobService {
 
     public void removeFailedJobs() {
         List<Job> jobs = jobRepository.findByStatus(JobStatus.FAILED);
+        jobs.forEach(j -> LOG.info("FAILED job to be deleted {}", j.getJobId() ));
         jobRepository.deleteAll(jobs);
+    }
+
+    public void removeDoneJob(Job job) {
+        if(JobStatus.DONE.equals(job.getStatus())) {
+            jobRepository.delete(job);
+            LOG.info("DONE job to be deleted {}", job.getJobId());
+        } else {
+            LOG.warn("Tried to remove not successful Job {} with status {}", job.getJobId(), job.getStatus());
+        }
+
+    }
+
+    public void removeDoneJobs() {
+
+        List<Job> jobs = jobRepository.findByStatus(JobStatus.DONE);
+        jobs.forEach(this::removeDoneJob);
     }
 }

@@ -20,7 +20,7 @@ public class JobWorker {
         try {
             Map<String, String> payload = new ObjectMapper().readValue(job.getPayload(), Map.class);
             hermesConnector.send(payload, job.getType());
-            job.setStatus(JobStatus.SUCCESSED);
+            job.setStatus(JobStatus.DONE);
             jobService.updateJob(job);
         } catch (Exception e) {
             jobService.handleJobError(job, e);
