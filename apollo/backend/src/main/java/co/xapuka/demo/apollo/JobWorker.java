@@ -22,6 +22,7 @@ public class JobWorker {
             hermesConnector.send(payload, job.getType());
             job.setStatus(JobStatus.DONE);
             jobService.updateJob(job);
+            Thread.sleep(5000);
         } catch (Exception e) {
             jobService.handleJobError(job, e);
         }

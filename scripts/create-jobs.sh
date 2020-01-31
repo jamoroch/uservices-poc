@@ -11,7 +11,7 @@ echo "Creating ${NUMBERS_OF_JOBS} Jobs"
      echo "launching job ${i}"
      COMPANY_ID=$(uuidgen)
      set -x
-     curl -s $BASE_URL/$COMPANY_ID  -X PUT -H "Content-Type:application/json" -d '{"companyName":"test"}' >> curl.out
+#     curl -s $BASE_URL/$COMPANY_ID  -X PUT -H "Content-Type:application/json" -d '{"companyName":"test"}' >> curl.out
      curl -s $BASE_URL/ -X POST  -H "Content-Type:application/json" -d '{"companyName":"test"}' >> curl.out
      set +x
    done

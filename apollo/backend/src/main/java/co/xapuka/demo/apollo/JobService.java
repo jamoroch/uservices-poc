@@ -56,7 +56,7 @@ public class JobService {
     }
 
     public List<Job> getJobsToProcess(){
-        return jobRepository.findTop1000ByStatusInOrderByLastModifiedDateAsc(Arrays.asList(JobStatus.CREATED,
+        return jobRepository.findTop10ByStatusInOrderByLastModifiedDateAsc(Arrays.asList(JobStatus.CREATED,
                 JobStatus.WAITING));
     }
 
